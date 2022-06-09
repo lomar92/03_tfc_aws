@@ -18,7 +18,7 @@ resource "aws_instance" "webapp" {
   vpc_security_group_ids      = [aws_security_group.webinar.id]
 
   tags = {
-    Name = "${var.environment}-apache-instance"
+    Name = "${var.environment}-webapp-instance"
   }
 }
 
@@ -31,10 +31,6 @@ output "ami-image-id" {
   value = data.hcp_packer_image.webapp.cloud_image_id
 }
 
-output "ubuntu-fingerprint-version" {
-  value = data.hcp_packer_iteration.ubuntu.fingerprint
-}
-
-output "apache-active-image" {
+output "iteration_id" {
   value = data.hcp_packer_iteration.ubuntu.ulid
 }
