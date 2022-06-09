@@ -14,11 +14,11 @@ resource "aws_instance" "webapp" {
   ami                         = data.hcp_packer_image.webapp.cloud_image_id
   instance_type               = "t2.micro"
   associate_public_ip_address = true
-  subnet_id                   = aws_subnet.webinar.id
-  vpc_security_group_ids      = [aws_security_group.webinar.id]
+  subnet_id                   = aws_subnet.demo.id
+  vpc_security_group_ids      = [aws_security_group.allow_tcp.id]
 
   tags = {
-    Name = "${var.environment}-webapp-instance"
+    Name = "packer-webapp-instance"
   }
 }
 

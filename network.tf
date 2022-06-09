@@ -1,26 +1,26 @@
-resource "aws_vpc" "webinar" {
+resource "aws_vpc" "demo" {
   cidr_block           = var.address_space
   enable_dns_hostnames = true
   enable_dns_support   = true
 
   tags = {
-    name = "${var.environment}-vpc-${var.region}"
+    name = "lomar-vpc"
   }
 }
 
-resource "aws_subnet" "webinar" {
-  vpc_id     = aws_vpc.webinar.id
+resource "aws_subnet" "demo" {
+  vpc_id     = aws_vpc.demo.id
   cidr_block = var.subnet_prefix
 
   tags = {
-    name = "${var.environment}-subnet"
+    name = "webapp-subnet"
   }
 }
 
-resource "aws_security_group" "webinar" {
-  name = "${var.environment}-security-group"
+resource "aws_security_group" "allow_tcp" {
+  name = "webapp-security-group"
 
-  vpc_id = aws_vpc.webinar.id
+  vpc_id = aws_vpc.demo.id
 
   ingress {
     from_port   = 22
@@ -52,28 +52,28 @@ resource "aws_security_group" "webinar" {
   }
 
   tags = {
-    Name = "${var.environment}-security-group"
+    Name = "webapp-security-group"
   }
 }
 
-resource "aws_internet_gateway" "webinar" {
-  vpc_id = aws_vpc.webinar.id
+resource "aws_internet_gateway" "ethernet" {
+  vpc_id = aws_vpc.demo.id
 
   tags = {
-    Name = "${var.environment}-internet-gateway"
+    Name = "lomar-internet-gateway"
   }
 }
 
-resource "aws_route_table" "webinar" {
-  vpc_id = aws_vpc.webinar.id
+resource "aws_route_table" "demo" {
+  vpc_id = aws_vpc.demo.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.webinar.id
+    gateway_id = aws_internet_gateway.ethernet.id
   }
 }
 
-resource "aws_route_table_association" "webinar" {
-  subnet_id      = aws_subnet.webinar.id
-  route_table_id = aws_route_table.webinar.id
+resource "aws_route_table_association" "demo" {
+  subnet_id      = aws_subnet.demo
+  route_table_id = aws_route_table.demo.id
 }
