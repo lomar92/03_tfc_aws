@@ -4,7 +4,7 @@ data "hcp_packer_iteration" "ubuntu" {
 }
 
 data "hcp_packer_image" "webapp" {
-  bucket_name    = var.bucket
+  bucket_name    = "richemont"
   iteration_id   = data.hcp_packer_iteration.ubuntu.ulid
   cloud_provider = "aws"
   region         = "eu-central-1"
